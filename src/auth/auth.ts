@@ -1,40 +1,45 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "@/lib/prisma";
 import { compare } from "bcryptjs";
 import { User } from "@prisma/client";
-import { findOneUser } from "@/data/user";
+import { findOneUser } from "@/db/user";
 
 const credentials = {
-  email: { label: "Email", type: "email", placeholder: "Your email" },
+  email: { label: "Email", type: "email", placeholder: "Votre adresse email" },
   password: {
-    label: "Password",
+    label: "Mot de passe",
     type: "password",
-    placeholder: "Your password",
+    placeholder: "Votre mot de passe",
   },
 };
 
+// Fonction pour authentifier un utilisateur avec les identifiants fournis.
 const authenticate = async (
   credentials: Record<"email" | "password", string>,
 ) => {
   const user = await findOneUser({ email: credentials.email });
 
-  if (!user) {
-    throw new Error("User name or password is not correct");
-  }
+  // Vérifie si l'utilisateur existe.
+  if (!user) throw new Error("Nom d'utilisateur ou mot de passe incorrect");
 
   const isPasswordCorrect = await compare(credentials.password, user.password);
 
-  if (!isPasswordCorrect) {
-    throw new Error("User name or password is not correct");
-  }
+  // Vérifie si le mot de passe est correct.
+  if (!isPasswordCorrect)
+    throw new Error("Nom d'utilisateur ou mot de passe incorrect");
 
-  if (!user.emailVerified) throw new Error("Please verify your email first!");
+  // Vérifie si l'email a été vérifié.
+  if (!user.emailVerified) {
+    throw new Error(
+      "Votre compte n'est pas encore activé. Veuillez vérifier votre boîte mail pour activer votre compte.",
+    );
+  }
 
   const { password, ...userWithoutPassword } = user;
   return userWithoutPassword;
 };
 
+// Configuration des options d'authentification pour NextAuth.
 export const authOptions: AuthOptions = {
   pages: {
     signIn: "/auth/login",
@@ -47,11 +52,12 @@ export const authOptions: AuthOptions = {
   },
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "Identifiants",
       credentials,
       async authorize(credentials) {
+        // Vérifie que les identifiants sont fournis.
         if (!credentials?.email || !credentials.password) {
-          throw new Error("Email and password are required");
+          throw new Error("L'email et le mot de passe sont requis");
         }
 
         return authenticate(credentials);

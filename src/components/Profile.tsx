@@ -25,7 +25,11 @@ const Info = () => {
   );
 };
 
-export const Profile = () => {
+type Props = {
+  trigger?: React.ReactNode;
+  onOpenChange?: (open: boolean) => void;
+};
+export const Profile = ({ trigger, onOpenChange }: Props) => {
   return (
     <Modal
       classNames={{
@@ -33,8 +37,9 @@ export const Profile = () => {
         dialogTitle: "mb-4",
       }}
       title="Profil"
-      trigger={<Button>Modal</Button>}
+      trigger={trigger}
       description={<Info />}
+      onOpenChange={onOpenChange}
     >
       <div className="border rounded-md p-4">
         <div className="border-none shadow-none mb-4 text-sm text-muted-foreground">

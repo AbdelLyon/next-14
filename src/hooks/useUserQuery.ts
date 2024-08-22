@@ -1,4 +1,3 @@
-import { registerAction } from "@/lib/actions/authAction";
 import useShowToast from "./useShowToast";
 import { RegisterPayload } from "@/validators/registerSchema";
 import {
@@ -8,18 +7,29 @@ import {
 } from "@/validators/loginSchema";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {
-  updateEmailAction,
-  updatePasswordAction,
-} from "@/lib/actions/profileAction";
+
 import { useStore } from "@/store/useStore";
+import { updateEmailAction } from "@/actions/updateEmail";
+import { updatePasswordAction } from "@/actions/updatePassword";
+import { registerAction } from "@/actions/register";
+import { UseFormReset } from "react-hook-form";
+
+type RegisterParams = {
+  data: RegisterPayload;
+  reset: UseFormReset<RegisterPayload>;
+};
+type LoginParams = {
+  data: LoginPayload;
+  reset: UseFormReset<LoginPayload>;
+  callbackUrl?: string;
+};
 
 export const useUserQuery = () => {
   const { showToast } = useShowToast();
   const { setCurrentUser } = useStore();
 
   const router = useRouter();
-  const registerUser = async (data: RegisterPayload) => {
+  const registerUser = async ({ data, reset }: RegisterParams) => {
     {
       const { accepted, confirmPassword, ...user } = data;
       try {
@@ -31,6 +41,7 @@ export const useUserQuery = () => {
           variant: "default",
           redirectTo: "/auth/login",
         });
+        reset();
         return newUser;
       } catch (error) {
         showToast({
@@ -43,37 +54,46 @@ export const useUserQuery = () => {
     }
   };
 
-  const loginUser = async (data: LoginPayload, callbackUrl?: string) => {
-    const result = await signIn("credentials", {
+  const loginUser = async ({ data, reset, callbackUrl }: LoginParams) => {
+    const response = await signIn("credentials", {
       redirect: false,
       email: data.email,
       password: data.password,
     });
-    if (!result?.ok) {
+    if (!response?.ok) {
       showToast({
-        description: result?.error as string,
+        description: response?.error as string,
         variant: "destructive",
       });
 
       return;
     }
     showToast({
-      description: "Connexion réussie",
+      description:
+        "Connexion réussie. Vous allez être redirigé vers la page d'accueil.",
       variant: "default",
       redirectTo: "/",
     });
-    router.push(callbackUrl ? callbackUrl : "/");
+    reset();
   };
 
-  const updateEmail = async ({ userId, email }: UpdateEmailPayload) => {
+  const updateEmail = async ({
+    userId,
+    email,
+    reset,
+  }: UpdateEmailPayload & {
+    reset: UseFormReset<UpdateEmailPayload>;
+  }) => {
     {
       try {
         const newUser = await updateEmailAction({ userId, email });
         showToast({
-          description: "Email mis à jour",
+          description: "Votre adresse email a été mise à jour avec succès.",
           variant: "default",
         });
+
         setCurrentUser(newUser);
+        reset();
         return newUser;
       } catch (error) {
         showToast({
@@ -90,7 +110,10 @@ export const useUserQuery = () => {
     userId,
     password,
     newPassword,
-  }: UpdatePasswordPayload) => {
+    reset,
+  }: UpdatePasswordPayload & {
+    reset: UseFormReset<UpdatePasswordPayload>;
+  }) => {
     {
       try {
         const newUser = await updatePasswordAction({
@@ -99,10 +122,12 @@ export const useUserQuery = () => {
           newPassword,
         });
         showToast({
-          description: "Mot de passe mis à jour",
+          description: "Votre mot de passe a été mis à jour avec succès.",
           variant: "default",
         });
+
         setCurrentUser(newUser);
+        reset();
         return newUser;
       } catch (error) {
         showToast({

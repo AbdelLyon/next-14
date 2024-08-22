@@ -35,9 +35,8 @@ export async function sendMail({
 }
 
 export function compileActivationTemplate(name: string, url: string) {
-  const html = pug.renderFile("src/lib/emailTemplates/test.pug", {
+  return pug.renderFile("src/mail/templates/activate.pug", {
     name,
     url,
   });
-  return html;
 }

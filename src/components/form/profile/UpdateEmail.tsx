@@ -28,6 +28,7 @@ const UpdateEmail = () => {
     await updateEmail({
       userId: session?.user.id as string,
       email,
+      reset,
     });
 
     reset();

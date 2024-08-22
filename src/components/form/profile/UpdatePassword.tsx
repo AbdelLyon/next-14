@@ -35,6 +35,7 @@ const UpdatePassword = () => {
       userId: session?.user.id as string,
       password: data.password,
       newPassword: data.newPassword,
+      reset,
     });
 
     reset();

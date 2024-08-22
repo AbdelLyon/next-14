@@ -22,6 +22,7 @@ type props = PropsWithChildren<{
   description?: React.ReactNode;
   trigger: React.ReactNode;
   footer?: React.ReactNode;
+  onOpenChange?: (open: boolean) => void;
 }>;
 
 export function Modal({
@@ -31,9 +32,10 @@ export function Modal({
   footer,
   trigger,
   children,
+  onOpenChange,
 }: props) {
   return (
-    <Dialog>
+    <Dialog onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className={cn(classNames?.dialogContent)}>
         <DialogHeader className={classNames?.dialogHeader}>

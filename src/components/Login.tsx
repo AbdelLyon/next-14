@@ -23,13 +23,18 @@ export const Login = ({ className, callbackUrl }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<LoginPayload>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit: SubmitHandler<LoginPayload> = async (data) =>
-    await loginUser(data, callbackUrl);
+    await loginUser({
+      data,
+      reset,
+      callbackUrl,
+    });
 
   return (
     <div className="flex h-screen flex-col items-center justify-center lg:flex-row">

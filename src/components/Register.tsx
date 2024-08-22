@@ -40,8 +40,10 @@ export const Register = ({ className }: { className?: string }) => {
   }, [password]);
 
   const save: SubmitHandler<RegisterPayload> = async (data) => {
-    registerUser(data);
-    reset();
+    await registerUser({
+      data,
+      reset,
+    });
   };
 
   return (
