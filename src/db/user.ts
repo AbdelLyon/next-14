@@ -1,6 +1,6 @@
 import db from "@/db/prisma";
 import { RegisterPayload } from "@/validators/registerSchema";
-import { User } from "@prisma/client";
+import { User } from "../../prisma/generated/client";
 
 export const findOneUser = async ({
   id,

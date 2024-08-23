@@ -2,6 +2,7 @@ import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { findOneUser } from "@/db/user";
+import { User } from "../../prisma/generated/client";
 
 const credentials = {
   email: { label: "Email", type: "email", placeholder: "Votre adresse email" },
@@ -66,7 +67,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user as any;
+        token.user = user as User;
       }
       return token;
     },

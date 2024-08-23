@@ -1,7 +1,7 @@
 import { ItemId } from "@/components/navigation/types";
 import { RegisterPayload } from "@/validators/registerSchema";
-import { User } from "@prisma/client";
 import { create } from "zustand";
+import { User } from "../../prisma/generated/client";
 
 export type Store = {
   itemId: ItemId;

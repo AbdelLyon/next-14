@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { User } from "../prisma/generated/client";
 
 declare module "next-auth" {
   interface Session {
