@@ -1,7 +1,6 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { User } from "@prisma/client";
 import { findOneUser } from "@/db/user";
 
 const credentials = {
@@ -67,7 +66,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user as User;
+        token.user = user as any;
       }
       return token;
     },
