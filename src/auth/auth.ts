@@ -1,8 +1,8 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
+import { User } from "@prisma/client";
 import { findOneUser } from "@/db/user";
-import { User } from "../../prisma/generated/client";
 
 const credentials = {
   email: { label: "Email", type: "email", placeholder: "Votre adresse email" },
