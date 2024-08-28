@@ -2,7 +2,6 @@
 
 import UpdateEmail from "./form/profile/UpdateEmail";
 import { Modal } from "./ui/modal";
-import { Button } from "./ui/button";
 import { useStore } from "@/store/useStore";
 import UpdatePassword from "./form/profile/UpdatePassword";
 

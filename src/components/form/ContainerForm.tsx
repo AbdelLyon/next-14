@@ -10,7 +10,7 @@ export const ContainerForm = ({ className, handleSubmit, children }: Props) => {
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "flex flex-col gap-4 p-6 w-full max-w-xl items-center justify-center text-muted-foreground m-4 ",
+        "flex flex-col gap-4 p-6 items-center justify-center text-muted-foreground m-4 ",
         className,
       )}
     >

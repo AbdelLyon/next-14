@@ -9,7 +9,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { carouselData } from "@/data/data";
+import { restaurantInfo } from "@/data/data";
 
 type Props = {
   className?: string;
@@ -27,14 +27,14 @@ export const Carousel = ({
   return (
     <CarouselRoot className={className} plugins={[plugin.current]}>
       <CarouselContent>
-        {carouselData.map(({ image, title, description }) => (
-          <CarouselItem key={image}>
+        {restaurantInfo.map(({ heroImgUrl, name, restaurantsId }) => (
+          <CarouselItem key={restaurantsId}>
             <Card>
               <CardContent>
                 <Background
-                  description={description}
-                  image={image}
-                  title={title}
+                  description="lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum."
+                  image={heroImgUrl}
+                  title={name}
                 />
               </CardContent>
             </Card>

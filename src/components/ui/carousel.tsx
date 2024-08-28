@@ -5,7 +5,8 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Button } from "./button";
-import { cn } from "../../lib/utils";
+
+import { cn } from "@/lib/utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -33,8 +34,9 @@ const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 function useCarousel() {
   const context = React.useContext(CarouselContext);
 
-  if (!context)
+  if (!context) {
     throw new Error("useCarousel must be used within a <Carousel />");
+  }
 
   return context;
 }
@@ -205,71 +207,4 @@ const CarouselItem = React.forwardRef<
 
 CarouselItem.displayName = "CarouselItem";
 
-const CarouselPrevious = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
-
-  return (
-    <Button
-      ref={ref}
-      className={cn(
-        "absolute  h-8 w-8 rounded-full",
-        orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-        className,
-      )}
-      disabled={!canScrollPrev}
-      size={size}
-      variant={variant}
-      onClick={scrollPrev}
-      {...props}
-    >
-      <ArrowLeft className="size-4" />
-      <span className="sr-only">Previous slide</span>
-    </Button>
-  );
-});
-
-CarouselPrevious.displayName = "CarouselPrevious";
-
-const CarouselNext = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
-
-  return (
-    <Button
-      ref={ref}
-      className={cn(
-        "absolute h-8 w-8 rounded-full",
-        orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
-        className,
-      )}
-      disabled={!canScrollNext}
-      size={size}
-      variant={variant}
-      onClick={scrollNext}
-      {...props}
-    >
-      <ArrowRight className="size-4" />
-      <span className="sr-only">Next slide</span>
-    </Button>
-  );
-});
-
-CarouselNext.displayName = "CarouselNext";
-
-export {
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-};
+export { type CarouselApi, Carousel, CarouselContent, CarouselItem };

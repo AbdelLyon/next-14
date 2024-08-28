@@ -25,7 +25,7 @@ export const PasswordFields = ({
         error={errors.password?.message as string}
         {...register("password")}
       />
-      <PasswordStrength strength={strength} />
+      <PasswordStrength className="px-1" strength={strength} />
     </div>
     <Input
       label="Confirmez mot de passe*"

@@ -29,7 +29,7 @@ export const Login = ({ className, callbackUrl }: Props) => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginPayload> = async (data) =>
+  const save: SubmitHandler<LoginPayload> = async (data) =>
     await loginUser({
       data,
       reset,
@@ -38,11 +38,8 @@ export const Login = ({ className, callbackUrl }: Props) => {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center lg:flex-row">
-      <Carousel className="w-full flex-1 text-white" />
-      <ContainerForm
-        handleSubmit={handleSubmit(onSubmit)}
-        className={className}
-      >
+      <Carousel className="w-4/6 text-white" />
+      <ContainerForm handleSubmit={handleSubmit(save)} className="flex-1">
         <Title
           tag="h2"
           className="w-full text-start text-2xl font-semibold tracking-tight"

@@ -1,10 +1,10 @@
 "use client";
-import { Profile } from "@/components/Profile";
+import { Home } from "@/components/home/Home";
 import { useStore } from "@/store/useStore";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-export default function Home() {
+export default function HomePage() {
   const { data: session } = useSession();
   const { setCurrentUser, currentUser } = useStore();
 
@@ -12,9 +12,5 @@ export default function Home() {
     if (session?.user) setCurrentUser(session?.user);
   }, []);
 
-  return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold">Welcome {currentUser?.firstname}</h1>
-    </div>
-  );
+  return <Home />;
 }

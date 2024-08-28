@@ -37,6 +37,7 @@
     "prisma": "^5.18.0",
     "pug": "^3.0.3",
     "react": "^18",
+    "react-country-state-city": "^1.1.3",
     "react-dom": "^18",
     "react-email": "^3.0.1",
     "react-hook-form": "^7.52.2",
